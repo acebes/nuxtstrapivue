@@ -1,0 +1,48 @@
+{
+  "connection": "default",
+  "collectionName": "items",
+  "info": {
+    "name": "item",
+    "description": "item that the shop sells"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "name": {
+      "default": "",
+      "maxLength": 300,
+      "type": "string",
+      "required": true
+    },
+    "code": {
+      "default": "0000",
+      "maxLength": 300,
+      "unique": true,
+      "minLength": 4,
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "default": "",
+      "type": "text"
+    },
+    "image": {
+      "collection": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "shop": {
+      "model": "shop",
+      "via": "items",
+      "dominant": true
+    },
+    "price": {
+      "default": 0,
+      "type": "decimal"
+    }
+  }
+}

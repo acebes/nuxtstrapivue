@@ -30,6 +30,10 @@
       "default": "main",
       "type": "string",
       "required": true
+    },
+    "items": {
+      "collection": "item",
+      "via": "shop"
     }
   }
 }

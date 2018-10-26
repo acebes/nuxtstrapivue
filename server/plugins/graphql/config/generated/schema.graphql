@@ -1,3 +1,11 @@
+input createItemInput {
+  data: ItemInput
+}
+
+type createItemPayload {
+  item: Item
+}
+
 input createRoleInput {
   data: RoleInput
 }
@@ -26,6 +34,14 @@ type createUserPayload {
 The `DateTime` scalar represents a date and time following the ISO 8601 standard
 """
 scalar DateTime
+
+input deleteItemInput {
+  where: InputID
+}
+
+type deleteItemPayload {
+  item: Item
+}
 
 input deleteRoleInput {
   where: InputID
@@ -67,14 +83,39 @@ input InputID {
   id: ID!
 }
 
+"""item that the shop sells"""
+type Item {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  code: String!
+  description: String
+  shop: Shop
+  price: Float
+  image(sort: String, limit: Int, start: Int, where: JSON): [UploadFile]
+}
+
+input ItemInput {
+  name: String!
+  code: String!
+  description: String
+  image: [ID]
+  shop: ID
+  price: Float
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON
 
-union Morph = Shop | createShopPayload | updateShopPayload | deleteShopPayload | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | createUserPayload | updateUserPayload | deleteUserPayload
+union Morph = Item | createItemPayload | updateItemPayload | deleteItemPayload | Shop | createShopPayload | updateShopPayload | deleteShopPayload | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | createUserPayload | updateUserPayload | deleteUserPayload
 
 type Mutation {
+  createItem(input: createItemInput): createItemPayload
+  updateItem(input: updateItemInput): updateItemPayload
+  deleteItem(input: deleteItemInput): deleteItemPayload
   createShop(input: createShopInput): createShopPayload
   updateShop(input: updateShopInput): updateShopPayload
   deleteShop(input: deleteShopInput): deleteShopPayload
@@ -94,6 +135,8 @@ type Mutation {
 }
 
 type Query {
+  item(id: ID!): Item
+  items(sort: String, limit: Int, start: Int, where: JSON): [Item]
   shop(id: ID!): Shop
   shops(sort: String, limit: Int, start: Int, where: JSON): [Shop]
   files(sort: String, limit: Int, start: Int, where: JSON): [UploadFile]
@@ -124,6 +167,7 @@ type Shop {
   description: String
   image: UploadFile
   branch: String!
+  items(sort: String, limit: Int, start: Int, where: JSON): [Item]
 }
 
 input ShopInput {
@@ -131,6 +175,16 @@ input ShopInput {
   description: String
   image: ID
   branch: String!
+  items: [ID]
+}
+
+input updateItemInput {
+  where: InputID
+  data: ItemInput
+}
+
+type updateItemPayload {
+  item: Item
 }
 
 input updateRoleInput {
