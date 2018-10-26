@@ -1,0 +1,35 @@
+{
+  "connection": "default",
+  "collectionName": "shops",
+  "info": {
+    "name": "shop",
+    "description": "shop / supplier of food"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "name": {
+      "default": "",
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "default": "",
+      "type": "text"
+    },
+    "image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "branch": {
+      "default": "main",
+      "type": "string",
+      "required": true
+    }
+  }
+}
